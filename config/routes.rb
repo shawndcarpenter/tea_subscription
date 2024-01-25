@@ -3,6 +3,8 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v0 do
       resources :teas, only: [:index]
+
+      resources :customer_subscriptions, only: [:create]
     end
   end
   # Defines the root path route ("/")
