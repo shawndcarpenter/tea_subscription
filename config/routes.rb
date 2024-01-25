@@ -4,7 +4,9 @@ Rails.application.routes.draw do
     namespace :v0 do
       resources :teas, only: [:index]
 
-      resources :customer_subscriptions, only: [:create]
+      resources :customer_subscriptions, only: [:create] do
+        patch :cancel, on: :collection, as: :cancel
+      end
     end
   end
   # Defines the root path route ("/")

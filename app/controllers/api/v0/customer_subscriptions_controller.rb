@@ -1,5 +1,4 @@
 class Api::V0::CustomerSubscriptionsController < ApplicationController
-  rescue_from ActiveRecord::RecordInvalid, with: :invalid_response
   rescue_from ActiveRecord::RecordNotFound, with: :not_found_response
 
   def create
@@ -15,10 +14,36 @@ class Api::V0::CustomerSubscriptionsController < ApplicationController
     end
   end
 
+  def cancel
+    customer = Customer.find(params[:customer_id])
+    subscription = Subscription.find(params[:subscription_id])
+    customer_subscription = CustomerSubscription.where("customer_id = #{customer.id} and subscription_id = #{subscription.id}").first
+
+    if customer_subscription && customer_subscription.status != "canceled"
+      customer_subscription.canceled!
+      canceled_successfully_response(customer.id, subscription.title)
+    elsif customer_subscription.status == "canceled"
+      already_canceled_response(customer.id, subscription.title)
+    end
+  end
+
   private
   def success_response(customer_id, subscription_title)
     render json:  {
       "message": "Successfully signed up Customer ##{customer_id} for #{subscription_title}"
+    }, status: 201
+  end
+
+  def already_canceled_response(customer_id, subscription_title)
+    render json: ErrorSerializer.new(
+      ErrorMessage.new(
+        "Subscription of #{subscription_title} by Customer ##{customer_id} is already canceled", 404
+      )).serialize_json, status: 404
+  end
+
+  def canceled_successfully_response(customer_id, subscription_title)
+    render json:  {
+      "message": "Customer ##{customer_id}'s subscription of #{subscription_title} has been canceled"
     }, status: 201
   end
 
@@ -27,11 +52,6 @@ class Api::V0::CustomerSubscriptionsController < ApplicationController
       ErrorMessage.new(
         "Customer ##{customer_id} is already signed up for #{subscription_title}", 404
       )).serialize_json, status: 404
-  end
-
-  def invalid_response(exception)
-    render json: ErrorSerializer.new(ErrorMessage.new(exception.message, 422))
-    .serialize_json, status: :not_found
   end
 
   def not_found_response(exception)
