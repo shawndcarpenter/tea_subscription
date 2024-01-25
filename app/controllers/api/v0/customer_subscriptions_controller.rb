@@ -1,0 +1,41 @@
+class Api::V0::CustomerSubscriptionsController < ApplicationController
+  rescue_from ActiveRecord::RecordInvalid, with: :invalid_response
+  rescue_from ActiveRecord::RecordNotFound, with: :not_found_response
+
+  def create
+    customer = Customer.find(params[:customer_id])
+    subscription = Subscription.find(params[:subscription_id])
+    if CustomerSubscription.where("customer_id = #{customer.id} and subscription_id = #{subscription.id}") != []
+      customer_already_subscribed_response(customer.id, subscription.title)
+    else
+      customer_subscription = CustomerSubscription.new(customer_id: customer.id, subscription_id: subscription.id)
+      if customer_subscription.save
+        success_response(customer.id, subscription.title)
+      end
+    end
+  end
+
+  private
+  def success_response(customer_id, subscription_title)
+    render json:  {
+      "message": "Successfully signed up Customer ##{customer_id} for #{subscription_title}"
+    }, status: 201
+  end
+
+  def customer_already_subscribed_response(customer_id, subscription_title)
+    render json: ErrorSerializer.new(
+      ErrorMessage.new(
+        "Customer ##{customer_id} is already signed up for #{subscription_title}", 404
+      )).serialize_json, status: 404
+  end
+
+  def invalid_response(exception)
+    render json: ErrorSerializer.new(ErrorMessage.new(exception.message, 422))
+    .serialize_json, status: :not_found
+  end
+
+  def not_found_response(exception)
+    render json: ErrorSerializer.new(ErrorMessage.new(exception.message, 404))
+    .serialize_json, status: 404
+  end
+end
