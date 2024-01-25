@@ -15,10 +15,27 @@ class Api::V0::CustomerSubscriptionsController < ApplicationController
     end
   end
 
+  def cancel
+    customer = Customer.find(params[:customer_id])
+    subscription = Subscription.find(params[:subscription_id])
+    customer_subscription = CustomerSubscription.where("customer_id = #{customer.id} and subscription_id = #{subscription.id}").first
+
+    if customer_subscription
+      customer_subscription.canceled!
+      canceled_successfully_response(customer.id, subscription.title)
+    end
+  end
+
   private
   def success_response(customer_id, subscription_title)
     render json:  {
       "message": "Successfully signed up Customer ##{customer_id} for #{subscription_title}"
+    }, status: 201
+  end
+
+  def canceled_successfully_response(customer_id, subscription_title)
+    render json:  {
+      "message": "Customer ##{customer_id}'s subscription of #{subscription_title} has been canceled"
     }, status: 201
   end
 
