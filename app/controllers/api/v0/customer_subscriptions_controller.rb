@@ -1,9 +1,17 @@
 class Api::V0::CustomerSubscriptionsController < ApplicationController
   rescue_from ActiveRecord::RecordNotFound, with: :not_found_response
 
+  def index
+    customer = Customer.find(params[:customer_id])
+    subscriptions = customer.subscriptions
+
+    render json: SubscriptionSerializer.new(subscriptions)
+  end
+
   def create
     customer = Customer.find(params[:customer_id])
     subscription = Subscription.find(params[:subscription_id])
+
     if CustomerSubscription.where("customer_id = #{customer.id} and subscription_id = #{subscription.id}") != []
       customer_already_subscribed_response(customer.id, subscription.title)
     else
