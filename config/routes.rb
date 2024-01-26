@@ -7,6 +7,10 @@ Rails.application.routes.draw do
       resources :customer_subscriptions, only: [:create] do
         patch :cancel, on: :collection, as: :cancel
       end
+
+      resources :customers, only: [] do
+        resources :subscriptions, only: [:index], :controller => "customer_subscriptions"
+      end
     end
   end
   # Defines the root path route ("/")

@@ -1,9 +1,20 @@
 class Api::V0::CustomerSubscriptionsController < ApplicationController
   rescue_from ActiveRecord::RecordNotFound, with: :not_found_response
 
+  def index
+    customer = Customer.find(params[:customer_id])
+    subscriptions = customer.subscriptions
+    if subscriptions == []
+      no_subscriptions_response(customer.id)
+    else
+      render json: SubscriptionSerializer.new(subscriptions)
+    end
+  end
+
   def create
     customer = Customer.find(params[:customer_id])
     subscription = Subscription.find(params[:subscription_id])
+
     if CustomerSubscription.where("customer_id = #{customer.id} and subscription_id = #{subscription.id}") != []
       customer_already_subscribed_response(customer.id, subscription.title)
     else
@@ -28,6 +39,12 @@ class Api::V0::CustomerSubscriptionsController < ApplicationController
   end
 
   private
+  def no_subscriptions_response(customer_id)
+    render json:  {
+      "message": "Customer ##{customer_id} does not have any active or canceled subscriptions"
+    }, status: 201
+  end
+
   def success_response(customer_id, subscription_title)
     render json:  {
       "message": "Successfully signed up Customer ##{customer_id} for #{subscription_title}"
