@@ -54,7 +54,7 @@ describe "Get Customer Tea Subscriptions API Endpoint" do
       expect(subscription[:attributes][:price]).to be_a Float
 
       expect(subscription[:attributes]).to have_key(:status)
-      expect(subscription[:attributes][:status]).to be_a Integer
+      expect(subscription[:attributes][:status]).to be_a String
 
       expect(subscription[:attributes]).to have_key(:frequency)
       expect(subscription[:attributes][:frequency]).to be_a String
