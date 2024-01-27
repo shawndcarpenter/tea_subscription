@@ -8,7 +8,11 @@ Rails.application.routes.draw do
         patch :cancel, on: :collection, as: :cancel
       end
 
-      resources :customers, only: [] do
+      resources :subscriptions, only: [:create, :update]
+
+      resources :subscription_teas, only: [:create]
+
+      resources :customers, only: [:create, :update] do
         resources :subscriptions, only: [:index], :controller => "customer_subscriptions"
       end
     end

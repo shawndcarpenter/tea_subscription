@@ -3,7 +3,6 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby "3.2.2"
 
-gem "faraday"
 gem "jsonapi-serializer"
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 7.0.8"
@@ -53,8 +52,6 @@ group :test do
   gem "rspec-rails"
   gem 'factory_bot_rails'
   gem "faker"
-  # gem "webmock"
-  # gem "vcr"
   gem "simplecov"
   gem 'shoulda-matchers', '~> 6.0'
 end

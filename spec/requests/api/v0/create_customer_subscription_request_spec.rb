@@ -2,11 +2,8 @@ require 'rails_helper'
 
 describe "Sign Up Customer for Tea Subscription API Endpoint" do
   it "creates a customer subscription" do
-    create_list(:customer, 3)
-    create_list(:subscription, 3)
-
-    subscription = Subscription.first
-    customer = Customer.first
+    subscription = create(:subscription)
+    customer = create(:customer)
 
     expect(CustomerSubscription.all.length).to eq(0)
 
@@ -24,8 +21,7 @@ describe "Sign Up Customer for Tea Subscription API Endpoint" do
 
   describe "sad paths" do
     it "gracefully handles customer does not exist" do
-      create_list(:subscription, 3)
-      subscription = Subscription.first
+      subscription = create(:subscription)
 
       expect(CustomerSubscription.all.length).to eq(0)
 
@@ -42,8 +38,7 @@ describe "Sign Up Customer for Tea Subscription API Endpoint" do
     end
 
     it "gracefully handles subscription does not exist" do
-      create_list(:customer, 3)
-      customer = Customer.first
+      customer = create(:customer)
 
       expect(CustomerSubscription.all.length).to eq(0)
 
@@ -60,8 +55,7 @@ describe "Sign Up Customer for Tea Subscription API Endpoint" do
     end
 
     it "gracefully handles missing parameters" do
-      create_list(:customer, 3)
-      customer = Customer.first
+      customer = create(:customer)
 
       expect(CustomerSubscription.all.length).to eq(0)
 
@@ -78,8 +72,7 @@ describe "Sign Up Customer for Tea Subscription API Endpoint" do
     end
 
     it "gracefully handles no parameters" do
-      create_list(:customer, 3)
-      customer = Customer.first
+      customer = create(:customer)
 
       expect(CustomerSubscription.all.length).to eq(0)
 
@@ -96,11 +89,8 @@ describe "Sign Up Customer for Tea Subscription API Endpoint" do
     end
 
     it "gracefully handles customer already subscribed" do
-      create_list(:customer, 3)
-      create_list(:subscription, 3)
-  
-      subscription = Subscription.first
-      customer = Customer.first
+      subscription = create(:subscription)
+      customer = create(:customer)
   
       expect(CustomerSubscription.all.length).to eq(0)
   
