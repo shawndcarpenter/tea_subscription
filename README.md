@@ -164,7 +164,7 @@ get "/api/v0/teas"
                     :title=>"Sencha", 
                     :description=>"Green", 
                     :temperature=>28.71, 
-                    :brew_time=>"04:05"}},
+                    :brew_time=>"1 min 19 sec"}},
    {:id=>"155", 
    :type=>"tea", ...
 ```

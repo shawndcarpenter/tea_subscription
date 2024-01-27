@@ -2,6 +2,7 @@ class Api::V0::SubscriptionsController < ApplicationController
 
   def create
     subscription = Subscription.new(subscription_params)
+
     if subscription.save
       render json: SubscriptionSerializer.new(subscription), status: 201
     else
@@ -11,6 +12,7 @@ class Api::V0::SubscriptionsController < ApplicationController
 
   def update
     subscription = Subscription.find(params[:id])
+    
     subscription.update!(subscription_params)
     subscription.save
    

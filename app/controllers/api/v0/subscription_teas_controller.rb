@@ -4,7 +4,7 @@ class Api::V0::SubscriptionTeasController < ApplicationController
     tea = Tea.find(params[:tea_id])
     subscription = Subscription.find(params[:subscription_id])
 
-    if SubscriptionTea.where("tea_id = #{tea.id} and subscription_id = #{subscription.id}") != []
+    if SubscriptionTea.find_by(tea_id: tea.id, subscription_id: subscription.id)
       subscription_tea_exists_response(tea.title, subscription.title)
     else
       subscription_tea = SubscriptionTea.new(tea_id: tea.id, subscription_id: subscription.id)
@@ -15,7 +15,6 @@ class Api::V0::SubscriptionTeasController < ApplicationController
   end
 
   private
-
   def subscription_tea_exists_response(tea_title, subscription_title)
     render json: ErrorSerializer.new(
       ErrorMessage.new(

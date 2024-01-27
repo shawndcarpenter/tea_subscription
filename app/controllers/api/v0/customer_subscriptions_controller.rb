@@ -14,7 +14,7 @@ class Api::V0::CustomerSubscriptionsController < ApplicationController
     customer = Customer.find(params[:customer_id])
     subscription = Subscription.find(params[:subscription_id])
 
-    if CustomerSubscription.where("customer_id = #{customer.id} and subscription_id = #{subscription.id}") != []
+    if CustomerSubscription.find_by(customer_id: customer.id, subscription_id: subscription.id)
       customer_already_subscribed_response(customer.id, subscription.title)
     else
       customer_subscription = CustomerSubscription.new(customer_id: customer.id, subscription_id: subscription.id)
@@ -27,7 +27,7 @@ class Api::V0::CustomerSubscriptionsController < ApplicationController
   def cancel
     customer = Customer.find(params[:customer_id])
     subscription = Subscription.find(params[:subscription_id])
-    customer_subscription = CustomerSubscription.where("customer_id = #{customer.id} and subscription_id = #{subscription.id}").first
+    customer_subscription = CustomerSubscription.find_by(customer_id: customer.id, subscription_id: subscription.id)
 
     if customer_subscription && customer_subscription.status != "canceled"
       customer_subscription.canceled!

@@ -31,10 +31,8 @@ describe "Cancel a Customer's Tea Subscription API Endpoint" do
 
   describe "sad paths" do
     before :each do
-      create_list(:subscription, 3)
-      @subscription = Subscription.first
-      create_list(:customer, 3)
-      @customer = Customer.first
+      @subscription = create(:subscription)
+      @customer = create(:customer)
       post '/api/v0/customer_subscriptions', params: {subscription_id: @subscription.id, customer_id: @customer.id }
       
       expect(CustomerSubscription.all.length).to eq(1)

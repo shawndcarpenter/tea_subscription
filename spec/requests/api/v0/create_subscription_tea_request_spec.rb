@@ -2,11 +2,8 @@ require 'rails_helper'
 
 describe "Create Subscription Teas API Endpoint" do
   it "creates a subscription tea" do
-    create_list(:tea, 2)
-    tea = Tea.first
-    tea_2 = Tea.last
-    create_list(:subscription, 2)
-    subscription = Subscription.first
+    tea = create(:tea)
+    subscription = create(:subscription)
 
     expect(SubscriptionTea.all.length).to eq(0)
 
@@ -29,8 +26,7 @@ describe "Create Subscription Teas API Endpoint" do
 
   describe "sad paths" do
     it "gracefully handles tea does not exist" do
-      create_list(:subscription, 3)
-      subscription = Subscription.first
+      subscription = create(:subscription)
 
       expect(SubscriptionTea.all.length).to eq(0)
 
@@ -47,8 +43,7 @@ describe "Create Subscription Teas API Endpoint" do
     end
 
     it "gracefully handles subscription does not exist" do
-      create_list(:tea, 3)
-      tea = Tea.first
+      tea = create(:tea)
 
       expect(SubscriptionTea.all.length).to eq(0)
 
@@ -65,8 +60,7 @@ describe "Create Subscription Teas API Endpoint" do
     end
 
     it "gracefully handles missing parameters" do
-      create_list(:tea, 3)
-      tea = Tea.first
+      tea = create(:tea)
 
       expect(SubscriptionTea.all.length).to eq(0)
 
@@ -83,8 +77,7 @@ describe "Create Subscription Teas API Endpoint" do
     end
 
     it "gracefully handles no parameters" do
-      create_list(:tea, 3)
-      tea = Tea.first
+      tea = create(:tea)
 
       expect(SubscriptionTea.all.length).to eq(0)
 

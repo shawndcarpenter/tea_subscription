@@ -9,7 +9,7 @@ describe "Get Customer Tea Subscriptions API Endpoint" do
     subscription_2 = Subscription.all[1]
     subscription_3 = Subscription.last
     customer = Customer.first
-    customer_2 = Customer.all[1]
+    customer_2 = Customer.last
 
     expect(CustomerSubscription.all.length).to eq(0)
 
