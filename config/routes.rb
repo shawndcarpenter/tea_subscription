@@ -10,6 +10,8 @@ Rails.application.routes.draw do
 
       resources :subscriptions, only: [:create, :update]
 
+      resources :subscription_teas, only: [:create]
+
       resources :customers, only: [:create, :update] do
         resources :subscriptions, only: [:index], :controller => "customer_subscriptions"
       end
