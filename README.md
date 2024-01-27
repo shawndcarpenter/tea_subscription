@@ -32,6 +32,7 @@ bundle exec rspec
 ```
 # Database
 The following models are available:
+
 ## Customers
 A customer's data may be sent in using the following parameters.
 
@@ -41,6 +42,7 @@ A customer's data may be sent in using the following parameters.
 - address: string
 
 Upon creation, a customer has no customer subscriptions.
+
 ## Subscriptions
 A subscription may be created in the database using the following parameters.
 
