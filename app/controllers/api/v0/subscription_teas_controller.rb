@@ -19,7 +19,7 @@ class Api::V0::SubscriptionTeasController < ApplicationController
   def subscription_tea_exists_response(tea_title, subscription_title)
     render json: ErrorSerializer.new(
       ErrorMessage.new(
-        "#{tea_title} is already part of #{subscription_title}", 422
+        "#{tea_title} tea is already part of #{subscription_title} subscription", 422
       )).serialize_json, status: 422
   end
 
