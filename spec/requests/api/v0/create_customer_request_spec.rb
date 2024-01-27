@@ -15,6 +15,8 @@ describe "Create Customers API Endpoint" do
 
     data = JSON.parse(response.body, symbolize_names: true)[:data]
 
+    expect(data).to have_key(:id)
+
     customer = Customer.all.first
 
     expect(Customer.all.length).to eq(1)
@@ -23,6 +25,27 @@ describe "Create Customers API Endpoint" do
     expect(customer.last_name).to eq("Smith")
     expect(customer.email).to eq("email@email.com")
     expect(customer.address).to eq("123 Address Drive")
+
+    expect(data).to have_key(:id)
+    expect(data[:id].to_i).to be_a Integer
+
+    expect(data).to have_key(:type)
+    expect(data[:type]).to eq("customer")
+
+    expect(data).to have_key(:attributes)
+    expect(data[:attributes]).to be_a Hash
+
+    expect(data[:attributes]).to have_key(:first_name)
+    expect(data[:attributes][:first_name]).to be_a String
+
+    expect(data[:attributes]).to have_key(:last_name)
+    expect(data[:attributes][:last_name]).to be_a String
+
+    expect(data[:attributes]).to have_key(:email)
+    expect(data[:attributes][:email]).to be_a String
+
+    expect(data[:attributes]).to have_key(:address)
+    expect(data[:attributes][:address]).to be_a String
   end
 
   describe "sad paths" do

@@ -23,6 +23,27 @@ describe "Create Subscriptions API Endpoint" do
     expect(subscription.price).to eq(41.24)
     expect(subscription.status).to eq("available")
     expect(subscription.frequency).to eq("Daily")
+
+    expect(data).to have_key(:id)
+    expect(data[:id].to_i).to be_a Integer
+
+    expect(data).to have_key(:type)
+    expect(data[:type]).to eq("subscription")
+
+    expect(data).to have_key(:attributes)
+    expect(data[:attributes]).to be_a Hash
+
+    expect(data[:attributes]).to have_key(:title)
+    expect(data[:attributes][:title]).to be_a String
+
+    expect(data[:attributes]).to have_key(:price)
+    expect(data[:attributes][:price]).to be_a Float
+
+    expect(data[:attributes]).to have_key(:status)
+    expect(data[:attributes][:status]).to be_a String
+
+    expect(data[:attributes]).to have_key(:frequency)
+    expect(data[:attributes][:frequency]).to be_a String
   end
 
   describe "sad paths" do
