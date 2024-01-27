@@ -1,5 +1,4 @@
 class Api::V0::CustomerSubscriptionsController < ApplicationController
-  rescue_from ActiveRecord::RecordNotFound, with: :not_found_response
 
   def index
     customer = Customer.find(params[:customer_id])
@@ -69,10 +68,5 @@ class Api::V0::CustomerSubscriptionsController < ApplicationController
       ErrorMessage.new(
         "Customer ##{customer_id} is already signed up for #{subscription_title}", 404
       )).serialize_json, status: 404
-  end
-
-  def not_found_response(exception)
-    render json: ErrorSerializer.new(ErrorMessage.new(exception.message, 404))
-    .serialize_json, status: 404
   end
 end
