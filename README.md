@@ -1,7 +1,11 @@
 # README
 
 # Tea Subscription Service
-> This application handles requests for creating/updating customers and subscriptions and canceling subscriptions.
+> This application handles requests for creating/updating customers and subscriptions and canceling subscriptions. 
+- A subscription may be created, with subscriptions being sent out on a frequency outlined by the service this api is connected to; perhaps monthly, quarterly or annually. These subscriptions will also have titles and a status for availability (available, out of stock, unavailable).
+-  Teas may be added to each subscription, with each tea being able to be added to multiple subscriptions. Teas have information including title, brew time, temperature and description.
+- Customers can create accounts with a first name, last name, email and address.
+- Customers may activate and cancel subscriptions.
 
 
 ## Installation
@@ -48,7 +52,7 @@ A subscription may be created in the database using the following parameters.
 
 - title: string
 - price: float
-- status: integer (set up as an enum with 0 = "available", 1 = "out_of_stock" and 2 = "canceled")
+- status: integer (set up as an enum with 0 = "available", 1 = "out_of_stock" and 2 = "unavailable")
 - frequency: string
 
 A theoretical front end service may create a variety of subscription options which each have their own titles, prices, and frequencies. The status may be set for a subscription whose items are out of stock; if more statuses are needed, they may be added in the enum in "app/models/subscription.rb".
@@ -67,6 +71,13 @@ A subscription can be linked to a customer using the customer_subscriptions join
 - description: string
 - temperature: float
 - brew_time: string
+
+## Subscription Teas
+This is a joins table that allows an application to add teas to a subscription.
+- subscription_id: integer
+- tea_id: integer
+
+A subscription_tea object may be created using the "Create a Subscription Tea" endpoint outlined in the Available Endpoints section of this README.
 
 ## Gems
 The [Shoulda Matchers Gem](https://github.com/thoughtbot/shoulda-matchers) is used for one-liner testing of models.
@@ -239,3 +250,30 @@ patch "/api/v0/subscriptions/#{subscription.id}", params: {subscription:
                 :frequency=>"Daily"}}}
 ```
 
+### Create a Subscription Tea
+
+This application provides users with the ability to create subscriptions and teas. A Subscription Tea includes the information for both the tea and the subscription.
+
+*Application will receive the following input:*
+```sh
+  post "/api/v0/subscription_teas", params: {
+                                        subscription_id:  subscription.id,      
+                                        tea_id: tea.id }
+```
+*And return the following output:*
+
+```sh
+{:message=>"Successfully added Earl Grey tea to European Mistletoe subscription"}
+```
+
+# Staff
+
+Shawn Carpenter: [Email](shawncarpenter.co@gmail.com) [LinkedIn](https://www.linkedin.com/in/shawndcarpenter/)
+
+## Contributing
+
+1. Fork it (<https://github.com/shawndcarpenter/tea_subscription>)
+2. Create your feature branch (`git checkout -b feature/fooBar`)
+3. Commit your changes (`git commit -am 'Add some fooBar'`)
+4. Push to the branch (`git push origin feature/fooBar`)
+5. Create a new Pull Request
